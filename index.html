@@ -21,6 +21,211 @@
       gtag('config', 'G-07C01B8Y6P');
     </script>
     <script src="index.js"></script>
+    <script>
+    // Remove "Coding For Beginners" if age > 15
+    document.addEventListener('DOMContentLoaded', function () {
+        const ageInput = document.getElementById('age');
+        const courseSelect = document.getElementById('course');
+        let codingOption = null;
+
+        function updateCourses() {
+            if (!codingOption) {
+                // Save reference to the Coding For Beginners option
+                codingOption = Array.from(courseSelect.options).find(
+                    opt => opt.value === "Coding For Beginners"
+                );
+            }
+            const age = parseInt(ageInput.value, 10);
+            if (age > 15 && codingOption && courseSelect.contains(codingOption)) {
+                courseSelect.removeChild(codingOption);
+            } else if ((isNaN(age) || age <= 15) && codingOption && !Array.from(courseSelect.options).includes(codingOption)) {
+                courseSelect.appendChild(codingOption);
+            }
+        }
+
+        ageInput.addEventListener('input', updateCourses);
+
+        // --- Cohort logic ---
+        const cohortSection = document.getElementById('weekday-cohort-section');
+        const cohortOptionsDiv = document.getElementById('cohort-options');
+
+        // Define cohort cycles with their end dates (YYYY-MM-DD)
+        const cohortCycles = [
+            {
+                id: "cohort1",
+                value: "First Cycle (February 3 - February 26)",
+                label: "First Cycle (February 3 2025 - February 26 2025)",
+                end: "2025-02-26"
+            },
+            {
+                id: "cohort2",
+                value: "Second Cycle (April 7 - May 5)",
+                label: "Second Cycle (April 7 2025 - May 5 2025)",
+                end: "2025-05-05"
+            },
+            {
+                id: "cohort3",
+                value: "Third Cycle (June 16 - July 9)",
+                label: "Third Cycle (June 16 2025 - July 9 2025)",
+                end: "2025-07-09"
+            },
+            {
+                id: "cohort4",
+                value: "Fourth Cycle (October 6 - October 29)",
+                label: "Fourth Cycle (October 6 2025 - October 29 2025)",
+                end: "2025-10-29"
+            }
+        ];
+
+        function showCohortsIfNeeded() {
+            // Only show for Web Development or Graphic Design
+            const selectedCourse = courseSelect.value;
+            if (selectedCourse === "Web Development" || selectedCourse === "Graphic Design") {
+                cohortOptionsDiv.innerHTML = `
+                    <br>
+                    <fieldset style="border:1px solid #ccc; border-radius:6px; padding:10px;">
+                        <legend style="font-size:1em;font-weight:bold;">Weekday Cohorts</legend>
+                        <!-- Weekday cohort radios will be injected here -->
+                    </fieldset>
+                `;
+                const fieldset = cohortOptionsDiv.querySelector('fieldset');
+                const today = new Date();
+                let anyCohort = false;
+                cohortCycles.forEach(cycle => {
+                    const endDate = new Date(cycle.end + "T23:59:59");
+                    if (today <= endDate) {
+                        anyCohort = true;
+                        const div = document.createElement('div');
+                        div.className = "form-check";
+                        div.innerHTML = `
+                            <input class="form-check-input" type="radio" name="weekday_cohort" id="${cycle.id}" value="${cycle.value}">
+                            <label class="form-check-label" for="${cycle.id}">${cycle.label}</label>
+                        `;
+                        fieldset.appendChild(div);
+                    }
+                });
+                cohortSection.style.display = anyCohort ? "block" : "none";
+            } else {
+                cohortSection.style.display = "none";
+                // Optionally clear selection
+                const radios = document.getElementsByName('weekday_cohort');
+                radios.forEach(r => r.checked = false);
+            }
+        }
+
+        // --- Weekend Cohort logic ---
+        const weekendCohortSection = document.createElement('div');
+        weekendCohortSection.id = "weekend-cohort-section";
+        weekendCohortSection.style.display = "none";
+        weekendCohortSection.innerHTML = `
+            <div class="section-title">Which of our cohorts are you interested in?</div>
+            <div class="form-section" id="weekend-cohort-options">
+                <br>
+                <fieldset style="border:1px solid #ccc; border-radius:6px; padding:10px;">
+                    <legend style="font-size:1em;font-weight:bold;">Weekend Cohorts</legend>
+                    <!-- Weekend cohort radios will be injected here -->
+                </fieldset>
+            </div>
+        `;
+        // Insert after weekday cohort section
+        cohortSection.parentNode.insertBefore(weekendCohortSection, cohortSection.nextSibling);
+
+        const weekendCohortOptionsDiv = weekendCohortSection.querySelector('#weekend-cohort-options');
+
+        const weekendCohortCycles = [
+            {
+                id: "weekend_cohort1",
+                value: "First Cycle (March 2 - April 12)",
+                label: "First Cycle (March 2 2025 - April 12 2025)",
+                end: "2025-04-12"
+            },
+            {
+                id: "weekend_cohort2",
+                value: "Second Cycle (May 17 - June 22)",
+                label: "Second Cycle (May 17 2025 - June 22 2025)",
+                end: "2025-06-22"
+            },
+            {
+                id: "weekend_cohort3",
+                value: "Third Cycle (July 5 - August 10)",
+                label: "Third Cycle (July 5 2025 - August 10 2025)",
+                end: "2025-08-10"
+            },
+            {
+                id: "weekend_cohort4",
+                value: "Fourth Cycle (October 4 - November 9)",
+                label: "Fourth Cycle (October 4 2025 - November 9 2025)",
+                end: "2025-11-09"
+            }
+        ];
+
+        function showWeekendCohortsIfNeeded() {
+            // Only show for Robotics or Computer Literacy
+            const selectedCourse = courseSelect.value;
+            if (selectedCourse === "Robotics" || selectedCourse === "Computer Literacy") {
+                const fieldset = weekendCohortOptionsDiv.querySelector('fieldset');
+                fieldset.innerHTML = '<legend style="font-size:1em;font-weight:bold;">Weekend Cohorts</legend>';
+                const today = new Date();
+                let anyCohort = false;
+                weekendCohortCycles.forEach(cycle => {
+                    const endDate = new Date(cycle.end + "T23:59:59");
+                    if (today <= endDate) {
+                        anyCohort = true;
+                        const div = document.createElement('div');
+                        div.className = "form-check";
+                        div.innerHTML = `
+                            <input class="form-check-input" type="radio" name="weekend_cohort" id="${cycle.id}" value="${cycle.value}">
+                            <label class="form-check-label" for="${cycle.id}">${cycle.label}</label>
+                        `;
+                        fieldset.appendChild(div);
+                    }
+                });
+                weekendCohortSection.style.display = anyCohort ? "block" : "none";
+            } else {
+                weekendCohortSection.style.display = "none";
+                // Optionally clear selection
+                const radios = document.getElementsByName('weekend_cohort');
+                radios.forEach(r => r.checked = false);
+            }
+        }
+
+        // Mode of Learning logic
+        const modeLearningTitle = document.querySelectorAll('.section-title')[2]; // 3rd section-title is "Mode of Learning"
+        const modeLearningSection = document.getElementById('mode-learning-section');
+        const modeLearningInPersonHTML = `
+            <input type="radio" id="mode_inperson" name="mode_learning" value="In-person" required>
+            <label for="mode_inperson" style="display:inline;">In-person</label><br>
+        `;
+        const modeLearningHomeVirtualHTML = `
+            <input type="radio" id="mode_home" name="mode_learning" value="Home" required>
+            <label for="mode_home" style="display:inline;">Home</label><br>
+            <input type="radio" id="mode_virtual" name="mode_learning" value="Virtual">
+            <label for="mode_virtual" style="display:inline;">Virtual</label><br>
+        `;
+
+        function updateModeLearning() {
+            const selectedCourse = courseSelect.value;
+            if (selectedCourse === "Coding For Beginners") {
+                modeLearningSection.innerHTML = modeLearningHomeVirtualHTML;
+                modeLearningTitle.textContent = "Mode of Learning (Home/Virtual)";
+            } else {
+                modeLearningSection.innerHTML = modeLearningInPersonHTML;
+                modeLearningTitle.textContent = "Mode of Learning";
+            }
+        }
+
+        courseSelect.addEventListener('change', function() {
+            showCohortsIfNeeded();
+            showWeekendCohortsIfNeeded();
+            updateModeLearning();
+        });
+
+        // Optionally, call once on load in case of pre-filled value
+        showCohortsIfNeeded();
+        showWeekendCohortsIfNeeded();
+        updateModeLearning();
+    });
+    </script>
 </head>
 <body>
    
@@ -64,10 +269,17 @@
                 <option value="Coding For Beginners">Coding For Beginners</option>
             </select>
         </div>
+        <!-- Section 2b: WeekDay Cohort Selection -->
+        <div id="weekday-cohort-section" style="display:none;">
+            <div class="section-title">Which of our cohorts are you interested in?</div>
+            <div class="form-section" id="cohort-options"><br><br>
+                <!-- Cohort options will be injected here by JS -->
+            </div>
+        </div>
 
         <!-- Section 3: Mode of Learning -->
         <div class="section-title">Mode of Learning</div>
-        <div class="form-section">
+        <div class="form-section" id="mode-learning-section">
             <input type="radio" id="mode_inperson" name="mode_learning" value="In-person" required>
             <label for="mode_inperson" style="display:inline;">In-person</label><br>
         </div>
