@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="description" content="Code Club Academy -  Course Registration Page">
+    <meta name="keywords" content="Code Club Academy, Course Registration">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Code Club Academy | Course Registration</title>
+    <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/plugins/owl.carousel.min.css">
+    <link rel="stylesheet" href="../assets/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="shortcut icon" href="../assets/images/logo/CCA-modified.png" type="image/x-icon">
+    <script src="https://kit.fontawesome.com/aa4f02b113.js" crossorigin="anonymous"></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-07C01B8Y6P"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-07C01B8Y6P');
+    </script>
+    <script src="index.js"></script>
+</head>
+<body>
+    <p>
+       <strong>Important:</strong> These are paid courses and are strictly in-person for both weekday and weekend sessions.<br>
+       <strong>WeekDay Courses:</strong> Graphic Design or Web Development<br>
+       <strong>WeekEnd Courses:</strong> Robotics or Computer Literacy<br>
+       <strong>Home/Virtual Course:</strong> Coding For Beginners<br>
+       <strong>Note:</strong> The courses are available for both adults and children.
+    </p>
+
+    <h1>Course Registration Form</h1>
+    <form action="http://localhost:3000/api/register-course" method="POST" class="container mt-4 mb-4 p-4 bg-white rounded shadow">
+        <!-- Section 1: Personal Information -->
+        <div class="section-title">Personal Information</div>
+        <div class="form-section">
+            <label for="full_name" class="form-label">Full Name <span class="required-star">*</span></label>
+            <input type="text" id="full_name" name="full_name" class="form-control" required>
+
+            <label for="email" class="form-label">Email <span class="required-star">*</span></label>
+            <input type="email" id="email" name="email" class="form-control" required>
+
+            <label for="phone" class="form-label">Phone Number <span class="required-star">*</span></label>
+            <input type="text" id="phone" name="phone" class="form-control" required>
+
+            <label for="age" class="form-label">Age <span class="required-star">*</span></label>
+            <input type="number" id="age" name="age" class="form-control" min="1" required>
+        </div>
+
+        <!-- Section 2: Course Selection -->
+        <div class="section-title">Course Selection</div>
+        <div class="form-section">
+            <label for="course" class="form-label">Which course are you registering for? <span class="required-star">*</span></label>
+            <select id="course" name="course" class="form-select" required>
+                <option value="">-- Select a Course --</option>
+                <option value="Web Development">Web Development</option>
+                <option value="Robotics">Robotics</option>
+                <option value="Computer Literacy">Computer Literacy</option>
+                <option value="Graphic Design">Graphic Design</option>
+                <option value="Coding For Beginners">Coding For Beginners</option>
+            </select>
+        </div>
+
+        <!-- Section 3: Mode of Learning -->
+        <div class="section-title">Mode of Learning</div>
+        <div class="form-section">
+            <input type="radio" id="mode_inperson" name="mode_learning" value="In-person" required>
+            <label for="mode_inperson" style="display:inline;">In-person</label><br>
+        </div>
+
+        <!-- Section 4: Preferred Mode of Communication -->
+        <div class="section-title">Preferred Mode of Communication</div>
+        <div class="form-section">
+            <input type="radio" id="comm_email" name="preferred_communication" value="Email" required>
+            <label for="comm_email" style="display:inline;">Email</label><br>
+            <input type="radio" id="comm_phone" name="preferred_communication" value="Phone">
+            <label for="comm_phone" style="display:inline;">Phone</label><br>
+            <input type="radio" id="comm_whatsapp" name="preferred_communication" value="WhatsApp">
+            <label for="comm_whatsapp" style="display:inline;">WhatsApp</label><br>
+            <input type="radio" id="comm_any" name="preferred_communication" value="Any">
+            <label for="comm_any" style="display:inline;">Any</label>
+        </div>
+
+        <!-- Section 5: Additional Information -->
+        <div class="section-title">Additional Information</div>
+        <div class="form-section">
+            <label for="location" class="form-label">Location (City/Town) <span class="required-star">*</span></label>
+            <input type="text" id="location" name="location" class="form-control" required>
+
+            <label for="how_heard" class="form-label">How did you hear about us? <span class="required-star">*</span></label>
+            <select id="how_heard" name="how_heard" class="form-select" required>
+                <option value="">-- Select --</option>
+                <option value="Social Media">Social Media</option>
+                <option value="Friend/Family">Friend/Family</option>
+                <option value="School">School</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+
+        <!-- Section 6: Consent -->
+        <div class="form-section">
+            <input type="checkbox" id="consent" name="consent" required>
+            <label for="consent" style="display:inline;">I confirm that the information provided is accurate. <span class="required-star">*</span></label>
+        </div>
+
+        <button type="submit">Register</button> 
+    </form>
+</body>
+</html>
